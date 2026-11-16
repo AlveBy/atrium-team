@@ -1,0 +1,68 @@
+{
+    "name": "alveby/atrium-team",
+    "description": "People of an organisation for Atrium: lawyers, doctors, teachers, staff, with departments, photos and contacts",
+    "type": "atrium-module",
+    "license": "MIT",
+    "homepage": "https://github.com/AlveBy/atrium",
+    "support": {
+        "issues": "https://github.com/AlveBy/atrium/issues",
+        "source": "https://github.com/AlveBy/atrium"
+    },
+    "keywords": [
+        "laravel",
+        "admin",
+        "cms",
+        "team",
+        "staff",
+        "multisite",
+        "i18n"
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^13.0",
+        "alveby/atrium": "^0.1"
+    },
+    "require-dev": {
+        "alveby/atrium-theme": "^0.1",
+        "orchestra/testbench": "^11.0",
+        "phpunit/phpunit": "^12.5"
+    },
+    "suggest": {
+        "alveby/atrium-theme": "Draws the team page and a page per person on the site"
+    },
+    "autoload": {
+        "psr-4": {
+            "Atrium\\Team\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Atrium\\Team\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "atrium": {
+            "resources": [
+                "Atrium\\Team\\Models\\Member",
+                "Atrium\\Team\\Models\\Department"
+            ],
+            "public_urls": {
+                "Atrium\\Team\\Models\\Member": {
+                    "prefix": "team"
+                }
+            },
+            "migrations": "database/migrations",
+            "demo": "Atrium\\Team\\Database\\TeamDemoSeeder"
+        },
+        "laravel": {
+            "providers": [
+                "Atrium\\Team\\TeamServiceProvider"
+            ]
+        },
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
