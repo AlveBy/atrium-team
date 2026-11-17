@@ -40,7 +40,7 @@ final class TeamServiceProvider extends ServiceProvider
                     ->sortBy([['sort', 'asc'], ['id', 'asc']]);
 
                 foreach ($departments as $department) {
-                    $groups[] = ['title' => (string) $department->name, 'people' => array_values(array_filter($people, static fn (RecordView $person): bool => $person->record->getAttribute('department_id') === $department->id))];
+                    $groups[] = ['title' => $department->name, 'people' => array_values(array_filter($people, static fn (RecordView $person): bool => $person->record->getAttribute('department_id') === $department->id))];
                 }
 
                 $rest = array_values(array_filter($people, static fn (RecordView $person): bool => ! $departments->contains('id', $person->record->getAttribute('department_id'))));
