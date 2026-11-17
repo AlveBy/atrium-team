@@ -17,6 +17,8 @@ use Atrium\Team\TeamServiceProvider;
 use Atrium\Team\Tests\TestCase;
 use Atrium\Theme\Pages;
 use Atrium\Theme\RecordView;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -160,6 +162,23 @@ final class ModelsTest extends TestCase
     {
         $this->assertSame('atrium-team::index', Member::themeView('index'));
         $this->assertNull(Member::themeView('item'));
+        // Model::__callStatic would hide a protected method, so the contract
+        // the theme documents (a public static method) is checked as declared.
+        $this->assertTrue((new \ReflectionMethod(Member::class, 'themeView'))->isPublic());
+    }
+
+    public function test_the_relations_are_called_as_methods(): void
+    {
+        $this->assertInstanceOf(BelongsTo::class, (new Member)->department());
+        $this->assertInstanceOf(HasMany::class, (new Department)->members());
+    }
+
+    public function test_a_department_without_a_name_in_the_language_is_a_group_with_an_empty_title(): void
+    {
+        $abroad = Department::query()->create(['name' => ['de' => 'Abteilung']]);
+        $ines = $this->member('Ines', 'ines', ['department_id' => $abroad->id]);
+
+        $this->assertSame([''], array_column($this->groupsOf([$ines]), 'title'));
     }
 
     public function test_the_views_and_translations_can_be_published(): void
